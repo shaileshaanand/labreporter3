@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/home/bun/app
+      - /home/bun/app/node_modules
+      - /home/bun/app/frontend/node_modules
+    environment:
+      - PORT=3000
+      - POSTGRES_URL=postgresql://postgres:postgres@db:5432/postgres
+    command: dumb-init bun run dev
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/home/bun/app
+      - /home/bun/app/node_modules
+      - /home/bun/app/frontend/node_modules
+    working_dir: /home/bun/app/frontend
+    ports:
+      - 4000:4000
+    command: dumb-init bun run dev
+    depends_on:
+      - app
+      - db
+
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+volumes:
+  db:
+    driver: local

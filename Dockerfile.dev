@@ -1,0 +1,28 @@
+FROM oven/bun:1.1-alpine
+
+RUN apk add --no-cache git dumb-init curl bash libstdc++6 libstdc++
+
+RUN sh -c "curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s 20"
+RUN apk del curl bash
+
+RUN mkdir -p /home/bun/app/node_modules
+RUN mkdir -p /home/bun/app/frontend/node_modules
+
+RUN chown -R bun:bun /home/bun
+
+USER bun
+
+WORKDIR /home/bun/app
+
+COPY --chown=bun:bun ./package.json ./bun.lockb /home/bun/app/
+
+RUN bun install
+
+COPY --chown=bun:bun ./frontend/package.json ./frontend/bun.lockb /home/bun/app/frontend/
+# COPY ./frontend/package.json ./frontend/bun.lockb /home/bun/app/frontend/
+
+RUN cd /home/bun/app/frontend && bun install
+
+# COPY --chown=bun:bun ./ /home/bun/app/
+
+# CMD [ "dumb-init", "bun", "run", "dev" ]
