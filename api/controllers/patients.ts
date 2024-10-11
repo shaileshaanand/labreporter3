@@ -24,6 +24,7 @@ const patientValidator = z.object({
 
 const patientsController = new Elysia({ prefix: "/patient" })
   .use(context)
+  .guard({ ensureLoggedIn: true })
   .model({
     patient: t.Object({
       name: t.String(),

@@ -4,8 +4,9 @@ import { ZodError } from "zod";
 import doctorsController from "./controllers/doctors";
 import patientsController from "./controllers/patients";
 import { APIError } from "./errors";
+import usersContoller from "./controllers/users";
 
-const app = new Elysia({ prefix: "/api" })
+const app = new Elysia()
   .use(swagger())
   .get("/hc", () => "OK")
   .onError(({ error, code, set }) => {
@@ -25,8 +26,8 @@ const app = new Elysia({ prefix: "/api" })
     }
     console.log(error);
   })
-  .use(doctorsController)
-  .use(patientsController);
+  .group("/api", (api) => api.use(patientsController).use(doctorsController))
+  .use(usersContoller);
 
 export type Api = typeof app;
 

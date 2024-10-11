@@ -5,6 +5,7 @@ const env = createEnv({
   server: {
     PORT: z.string(),
     POSTGRES_URL: z.string(),
+    JWT_SECRET: z.string(),
   },
   runtimeEnv: process.env,
 });

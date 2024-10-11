@@ -8,6 +8,13 @@
       "when": 1728547483753,
       "tag": "0000_sour_mentallo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1728618077419,
+      "tag": "0001_wild_prism",
+      "breakpoints": true
     }
   ]
 }
