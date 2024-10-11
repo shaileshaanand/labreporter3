@@ -9,7 +9,11 @@ function App() {
 
   useEffect(() => {
     const api = treaty<Api>(window.location.host).api;
-    api.doctors.index.get().then((data) => console.log(data));
+    api.doctors.index.get().then((response) => {
+      if(response.error){
+        throw response.error
+      }
+      console.log(response.data)});
   }, []);
 
   return (
