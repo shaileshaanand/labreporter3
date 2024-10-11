@@ -13,5 +13,5 @@ const dbFactory = () => {
 };
 
 const db = dbFactory();
-export type NodePgDatabase = typeof db;
+
 export default db;
