@@ -1,10 +1,10 @@
 import { and, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { z } from "zod";
-import context from "../setup";
-import db from "../utils/db";
 import { users } from "../db/schema";
 import { NotFoundError, UnauthorizedError } from "../errors";
+import context from "../setup";
+import db from "../utils/db";
 import { verifyPassword } from "../utils/passwords";
 
 const authController = new Elysia({ prefix: "/auth" })

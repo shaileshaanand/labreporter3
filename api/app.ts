@@ -1,12 +1,12 @@
 import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { ZodError } from "zod";
+import authController from "./controllers/auth";
 import doctorsController from "./controllers/doctors";
 import patientsController from "./controllers/patients";
 import templatesController from "./controllers/templates";
 import usersContoller from "./controllers/users";
 import { APIError } from "./errors";
-import authController from "./controllers/auth";
 
 const app = new Elysia()
   .use(swagger())
