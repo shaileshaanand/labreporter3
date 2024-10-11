@@ -67,11 +67,16 @@ const doctorsController = new Elysia({ prefix: "/doctors" })
   )
   .put(
     "/:id",
-    async ({ params: { id }, body, error }) => {
+    async ({ params: { id }, body }) => {
       const payload = doctorValidator.parse(body);
+      const updatePayload = {
+        name: payload.name,
+        phone: payload.phone ?? null,
+        email: payload.email ?? null,
+      };
       const [doctor] = await db
         .update(doctors)
-        .set(payload)
+        .set(updatePayload)
         .where(eq(doctors.id, id))
         .returning();
       if (!doctor) {

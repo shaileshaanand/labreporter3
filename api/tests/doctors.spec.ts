@@ -154,4 +154,30 @@ describe("Doctor Tests", () => {
     const response = await api.doctors({ id: doctor.id }).get();
     expect(response.status).toBe(401);
   });
+
+  it("Should not get a non-existent doctor", async () => {
+    const response = await api.doctors({ id: faker.number.int(100) }).get({
+      headers: { Authorization: authHeader },
+    });
+    expect(response.status).toBe(404);
+  });
+
+  it("Should update a doctor", async () => {
+    const doctor = await doctorFactory(db);
+
+    const updatedName = faker.person.fullName();
+    const response = await api
+      .doctors({ id: doctor.id })
+      .put({ name: updatedName }, { headers: { Authorization: authHeader } });
+
+    expect(response.status).toBe(200);
+    if (response.error) {
+      throw response.error;
+    }
+    const { data } = response;
+    expect(data.id).toBe(doctor.id);
+    expect(data.name).toBe(updatedName);
+    expect(data.phone).toBe(null);
+    expect(data.email).toBe(null);
+  });
 });
