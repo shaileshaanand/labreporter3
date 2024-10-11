@@ -1,7 +1,8 @@
 import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
-import doctorsController from "./controllers/doctors";
 import { ZodError } from "zod";
+import doctorsController from "./controllers/doctors";
+import patientsController from "./controllers/patients";
 import { APIError } from "./errors";
 
 const app = new Elysia({ prefix: "/api" })

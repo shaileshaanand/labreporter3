@@ -1,13 +1,13 @@
-import { describe, expect, it, beforeEach, afterEach, mock } from "bun:test";
+import { afterEach, beforeEach, describe, expect, it, mock } from "bun:test";
+import { PGlite } from "@electric-sql/pglite";
 import { treaty } from "@elysiajs/eden";
 import { faker } from "@faker-js/faker";
-import app from "../app";
-import { generatePhoneNumber } from "./utils";
-import { PGlite } from "@electric-sql/pglite";
-import { drizzle, type PgliteDatabase } from "drizzle-orm/pglite";
-import * as schema from "../db/schema";
-import migrateDb from "../db/migrate";
 import { eq } from "drizzle-orm";
+import { type PgliteDatabase, drizzle } from "drizzle-orm/pglite";
+import app from "../app";
+import migrateDb from "../db/migrate";
+import * as schema from "../db/schema";
+import { generatePhoneNumber } from "./utils";
 
 let db: PgliteDatabase<typeof schema>;
 let dbClient: PGlite;

@@ -10,10 +10,11 @@ function App() {
   useEffect(() => {
     const api = treaty<Api>(window.location.host).api;
     api.doctors.index.get().then((response) => {
-      if(response.error){
-        throw response.error
+      if (response.error) {
+        throw response.error;
       }
-      console.log(response.data)});
+      console.log(response.data);
+    });
   }, []);
 
   return (
