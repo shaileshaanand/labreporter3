@@ -83,10 +83,6 @@ const doctorsController = new Elysia({ prefix: "/doctors" })
     {
       params: "idParam",
       body: "doctorInsertPayload",
-      response: {
-        201: DoctorSelectSchema,
-        404: t.String(),
-      },
     },
   )
   .delete(
