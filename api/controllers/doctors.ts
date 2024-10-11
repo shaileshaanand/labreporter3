@@ -1,10 +1,11 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import Elysia, { t } from "elysia";
 import { z } from "zod";
 import { doctors } from "../db/schema";
 import { DoctorSelectSchema } from "../db/types";
 import context from "../setup";
 import db from "../utils/db";
+import { NotFoundError } from "../errors";
 
 const doctorValidator = z.object({
   name: z.string().min(3),
@@ -24,24 +25,30 @@ const doctorsController = new Elysia({ prefix: "/doctors" })
       email: t.Optional(t.String()),
     }),
   })
-  .get("/", async () => db.query.doctors.findMany())
+  .get("/", async () =>
+    db.query.doctors.findMany({
+      columns: {
+        deleted: false,
+      },
+      where: eq(doctors.deleted, false),
+    }),
+  )
   .get(
     "/:id",
-    async ({ params: { id }, error }) => {
+    async ({ params: { id } }) => {
       const doctor = await db.query.doctors.findFirst({
-        where: eq(doctors.id, id),
+        where: and(eq(doctors.deleted, false), eq(doctors.id, id)),
+        columns: {
+          deleted: false,
+        },
       });
       if (!doctor) {
-        return error(404, "Not found");
+        throw new NotFoundError(`Doctor with id ${id} not found`);
       }
       return doctor;
     },
     {
       params: "idParam",
-      response: {
-        200: DoctorSelectSchema,
-        404: t.String(),
-      },
     },
   )
   .post(
@@ -49,15 +56,12 @@ const doctorsController = new Elysia({ prefix: "/doctors" })
     async ({ body, set }) => {
       const payload = doctorValidator.parse(body);
       const [doctor] = await db.insert(doctors).values(payload).returning();
-      console.log("POST");
       set.status = 201;
-      return doctor;
+      const { deleted, ...doctorResponse } = doctor;
+      return doctorResponse;
     },
     {
       body: "doctorInsertPayload",
-      response: {
-        201: DoctorSelectSchema,
-      },
     },
   )
   .put(
@@ -70,9 +74,10 @@ const doctorsController = new Elysia({ prefix: "/doctors" })
         .where(eq(doctors.id, id))
         .returning();
       if (!doctor) {
-        return error(404, "Not Found");
+        throw new NotFoundError(`Doctor with id ${id} not found`);
       }
-      return doctor;
+      const { deleted, ...doctorResponse } = doctor;
+      return doctorResponse;
     },
     {
       params: "idParam",
@@ -85,10 +90,10 @@ const doctorsController = new Elysia({ prefix: "/doctors" })
   )
   .delete(
     "/:id",
-    ({ params: { id }, error, set }) => {
+    ({ params: { id }, set }) => {
       const doctor = db.delete(doctors).where(eq(doctors.id, id)).returning();
       if (!doctor) {
-        return error(404, "Not Found");
+        throw new NotFoundError(`Doctor with id ${id} not found`);
       }
       set.status = 204;
       return;
