@@ -22,6 +22,13 @@
       "when": 1728619447006,
       "tag": "0002_sleepy_tigra",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1728647672665,
+      "tag": "0003_zippy_typhoid_mary",
+      "breakpoints": true
     }
   ]
 }
