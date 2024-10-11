@@ -126,4 +126,33 @@ describe("Doctor Tests", () => {
     expect(response.status).toBe(401);
     expect(response.error).toBeDefined();
   });
+
+  it("Should get a doctor", async () => {
+    const doctor = await doctorFactory(db);
+    const response = await api.doctors({ id: doctor.id }).get({
+      headers: { Authorization: authHeader },
+    });
+    expect(response.status).toBe(200);
+    if (response.error) {
+      throw response.error;
+    }
+    const { data } = response;
+    expect(data.name).toBe(doctor.name);
+    expect(data.email).toBe(doctor.email);
+    expect(data.phone).toBe(doctor.phone);
+  });
+
+  it("Should not get a deleted doctor", async () => {
+    const doctor = await doctorFactory(db, { deleted: true });
+    const response = await api.doctors({ id: doctor.id }).get({
+      headers: { Authorization: authHeader },
+    });
+    expect(response.status).toBe(404);
+  });
+
+  it("Should not get a doctor if unauthorized", async () => {
+    const doctor = await doctorFactory(db);
+    const response = await api.doctors({ id: doctor.id }).get();
+    expect(response.status).toBe(401);
+  });
 });
