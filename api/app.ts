@@ -24,7 +24,8 @@ const app = new Elysia({ prefix: "/api" })
     }
     console.log(error);
   })
-  .use(doctorsController);
+  .use(doctorsController)
+  .use(patientsController);
 
 export type Api = typeof app;
 
