@@ -95,7 +95,6 @@ describe("Doctor Tests", () => {
   });
 
   it("Should not get deleted doctors", async () => {
-    //create 3 doctors, 1 of them deleted
     const doctors = await Promise.all([doctorFactory(db), doctorFactory(db)]);
     const deletedDoctor = await doctorFactory(db, { deleted: true });
     const response = await api.doctors.index.get({
