@@ -1,7 +1,7 @@
-import Elysia, { t } from "elysia";
-import { UnauthorizedError } from "./errors";
 import jwt from "@elysiajs/jwt";
+import Elysia, { t } from "elysia";
 import env from "./env";
+import { UnauthorizedError } from "./errors";
 
 const context = new Elysia()
   .model({

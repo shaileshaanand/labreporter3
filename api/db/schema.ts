@@ -58,3 +58,20 @@ export const users = pgTable("users", (t) => {
       .notNull(),
   };
 });
+
+export const templates = pgTable("templates", (t) => {
+  return {
+    id: t.serial("id").primaryKey().notNull(),
+    name: t.text("name").notNull(),
+    content: t.text("content").notNull(),
+    deleted: t.boolean("deleted").default(false).notNull(),
+    createdAt: t
+      .timestamp("created_at", { mode: "date" })
+      .defaultNow()
+      .notNull(),
+    updatedAt: t
+      .timestamp("updated_at", { mode: "date" })
+      .$onUpdate(() => new Date())
+      .notNull(),
+  };
+});

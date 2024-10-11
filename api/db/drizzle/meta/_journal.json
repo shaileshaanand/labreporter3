@@ -15,6 +15,13 @@
       "when": 1728618077419,
       "tag": "0001_wild_prism",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1728619447006,
+      "tag": "0002_sleepy_tigra",
+      "breakpoints": true
     }
   ]
 }

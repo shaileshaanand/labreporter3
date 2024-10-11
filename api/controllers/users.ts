@@ -1,9 +1,9 @@
 import { and, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
-import context from "../setup";
-import db from "../utils/db";
 import { users } from "../db/schema";
 import { NotFoundError } from "../errors";
+import context from "../setup";
+import db from "../utils/db";
 
 const usersContoller = new Elysia({ prefix: "/user" })
   .use(context)

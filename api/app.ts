@@ -3,8 +3,9 @@ import { Elysia } from "elysia";
 import { ZodError } from "zod";
 import doctorsController from "./controllers/doctors";
 import patientsController from "./controllers/patients";
-import { APIError } from "./errors";
+import templatesController from "./controllers/templates";
 import usersContoller from "./controllers/users";
+import { APIError } from "./errors";
 
 const app = new Elysia()
   .use(swagger())
@@ -27,7 +28,8 @@ const app = new Elysia()
     console.log(error);
   })
   .group("/api", (api) => api.use(patientsController).use(doctorsController))
-  .use(usersContoller);
+  .use(usersContoller)
+  .use(templatesController);
 
 export type Api = typeof app;
 
