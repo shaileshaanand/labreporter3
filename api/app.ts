@@ -6,6 +6,7 @@ import patientsController from "./controllers/patients";
 import templatesController from "./controllers/templates";
 import usersContoller from "./controllers/users";
 import { APIError } from "./errors";
+import authController from "./controllers/auth";
 
 const app = new Elysia()
   .use(swagger())
@@ -29,7 +30,8 @@ const app = new Elysia()
   })
   .group("/api", (api) => api.use(patientsController).use(doctorsController))
   .use(usersContoller)
-  .use(templatesController);
+  .use(templatesController)
+  .use(authController);
 
 export type Api = typeof app;
 

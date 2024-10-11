@@ -17,7 +17,7 @@
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "makemigrations": "drizzle-kit generate",
-    "migrate": "bun run api/db/migrate.ts"
+    "migrate": "drizzle-kit migrate"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
