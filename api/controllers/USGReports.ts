@@ -20,11 +20,11 @@ const USGReportQueryFilters = {
       },
     },
   },
-  columns: {
-    deleted: false,
-    patientId: false,
-    referrerId: false,
-  },
+  // columns: {
+  // deleted: false,
+  //   patientId: false,
+  //   referrerId: false,
+  // },
 };
 
 const USGReportPayloadValidator = z
@@ -41,7 +41,7 @@ const USGReportPayloadValidator = z
     referrerId: referrer,
   }));
 
-const USGReportsController = new Elysia({ prefix: "/usg-report" })
+const USGReportsController = new Elysia({ prefix: "/usgreport" })
   .use(context)
   .guard({
     ensureLoggedIn: true,
@@ -87,10 +87,10 @@ const USGReportsController = new Elysia({ prefix: "/usg-report" })
           ? like(USGReports.findings, `%${queryData.findings}%`)
           : undefined,
         queryData.date_after
-          ? gte(USGReports.date, queryData.date_after)
+          ? gte(USGReports.date, queryData.date_after.toISOString())
           : undefined,
         queryData.date_before
-          ? lte(USGReports.date, queryData.date_before)
+          ? lte(USGReports.date, queryData.date_before.toISOString())
           : undefined,
         eq(USGReports.deleted, false),
       );
@@ -148,12 +148,32 @@ const USGReportsController = new Elysia({ prefix: "/usg-report" })
       // try {
       const [CreatedUSGReport] = await db
         .insert(USGReports)
-        .values(data)
+        .values({ ...data, date: data.date.toISOString() })
         .returning();
       const USGReport = await db.query.USGReports.findFirst({
         where: eq(USGReports.id, CreatedUSGReport.id),
-        ...USGReportQueryFilters,
+        with: {
+          patient: {
+            columns: {
+              deleted: false,
+            },
+          },
+          referrer: {
+            columns: {
+              deleted: false,
+            },
+          },
+        },
+        columns: {
+          deleted: false,
+          patientId: false,
+          referrerId: false,
+        },
       });
+
+      if (!USGReport) {
+        throw new BadRequestError("Could not create report");
+      }
 
       set.status = 201;
       return USGReport;
@@ -172,7 +192,23 @@ const USGReportsController = new Elysia({ prefix: "/usg-report" })
     async ({ params: { id } }) => {
       const USGReport = await db.query.USGReports.findFirst({
         where: and(eq(USGReports.id, id), eq(USGReports.deleted, false)),
-        ...USGReportQueryFilters,
+        with: {
+          patient: {
+            columns: {
+              deleted: false,
+            },
+          },
+          referrer: {
+            columns: {
+              deleted: false,
+            },
+          },
+        },
+        columns: {
+          deleted: false,
+          patientId: false,
+          referrerId: false,
+        },
       });
       if (!USGReport) {
         throw new NotFoundError(`USGReport with id ${id} not found`);
@@ -180,9 +216,7 @@ const USGReportsController = new Elysia({ prefix: "/usg-report" })
       return USGReport;
     },
     {
-      params: t.Object({
-        id: t.Numeric(),
-      }),
+      params: "idParam",
     },
   )
   .put(
@@ -192,7 +226,7 @@ const USGReportsController = new Elysia({ prefix: "/usg-report" })
 
       await db
         .update(USGReports)
-        .set(data)
+        .set({ ...data, date: data.date.toISOString() })
         .where(and(eq(USGReports.id, id), eq(USGReports.deleted, false)))
         .returning();
 
@@ -207,9 +241,7 @@ const USGReportsController = new Elysia({ prefix: "/usg-report" })
       return USGReport;
     },
     {
-      params: t.Object({
-        id: t.Numeric(),
-      }),
+      params: "idParam",
       body: "USGReport",
     },
   )

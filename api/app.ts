@@ -27,13 +27,22 @@ const app = new Elysia()
       set.status = error.status;
       return { errors: [{ message: error.message }] };
     }
+    // biome-ignore lint:lint/suspicious/noExplicitAny
+    if ((error as any).code === "23503") {
+      set.status = 400;
+      return { errors: [{ message: "Foreign key violation" }] };
+    }
     console.log(error);
   })
-  .group("/api", (api) => api.use(patientsController).use(doctorsController))
-  .use(usersContoller)
-  .use(templatesController)
-  .use(authController)
-  .use(USGReportsController);
+  .group("/api", (api) =>
+    api
+      .use(patientsController)
+      .use(doctorsController)
+      .use(usersContoller)
+      .use(templatesController)
+      .use(authController)
+      .use(USGReportsController),
+  );
 
 export type Api = typeof app;
 

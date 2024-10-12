@@ -100,7 +100,11 @@ export const USGReports = pgTable(
         .notNull(),
       partOfScan: t.text("partOfScan").notNull(),
       findings: t.text("findings").notNull(),
-      date: t.timestamp("date").notNull(),
+      date: t
+        .timestamp("date", {
+          mode: "string",
+        })
+        .notNull(),
       deleted: t.boolean("deleted").default(false),
       createdAt: t.timestamp("createdAt").defaultNow().notNull(),
       updatedAt: t
