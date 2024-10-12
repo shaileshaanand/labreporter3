@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gte, like, lte } from "drizzle-orm";
+import { and, count, desc, eq, gte, ilike, lte } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { z } from "zod";
 import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "../config/constants";
@@ -6,6 +6,7 @@ import { USGReports } from "../db/schema";
 import { BadRequestError, NotFoundError } from "../errors";
 import context from "../setup";
 import db from "../utils/db";
+import { formatDate } from "../tests/utils";
 
 const USGReportQueryFilters = {
   with: {
@@ -81,16 +82,16 @@ const USGReportsController = new Elysia({ prefix: "/usgreport" })
           ? eq(USGReports.referrerId, queryData.referrer)
           : undefined,
         queryData.partOfScan
-          ? like(USGReports.partOfScan, `%${queryData.partOfScan}%`)
+          ? ilike(USGReports.partOfScan, `%${queryData.partOfScan}%`)
           : undefined,
         queryData.findings
-          ? like(USGReports.findings, `%${queryData.findings}%`)
+          ? ilike(USGReports.findings, `%${queryData.findings}%`)
           : undefined,
         queryData.date_after
-          ? gte(USGReports.date, queryData.date_after.toISOString())
+          ? gte(USGReports.date, formatDate(queryData.date_after))
           : undefined,
         queryData.date_before
-          ? lte(USGReports.date, queryData.date_before.toISOString())
+          ? lte(USGReports.date, formatDate(queryData.date_before))
           : undefined,
         eq(USGReports.deleted, false),
       );

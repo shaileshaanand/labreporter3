@@ -61,9 +61,9 @@ const patientsController = new Elysia({ prefix: "/patient" })
         queryData.email ? eq(patients.email, queryData.email) : undefined,
         queryData.query
           ? or(
-              like(patients.name, `%${queryData.query}%`),
-              like(patients.phone, `%${queryData.query}%`),
-              like(patients.email, `%${queryData.query}%`),
+              ilike(patients.name, `%${queryData.query}%`),
+              ilike(patients.phone, `%${queryData.query}%`),
+              ilike(patients.email, `%${queryData.query}%`),
             )
           : undefined,
         eq(patients.deleted, false),
