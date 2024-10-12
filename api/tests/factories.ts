@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import type { BunSQLiteDatabase } from "drizzle-orm/bun-sqlite";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import type { PgliteDatabase } from "drizzle-orm/pglite";
 import * as schema from "../db/schema";
