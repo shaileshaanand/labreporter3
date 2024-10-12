@@ -4,7 +4,7 @@ import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import type { PgliteDatabase } from "drizzle-orm/pglite";
 import * as schema from "../db/schema";
 import { hashPassword } from "../utils/passwords";
-import { generatePhoneNumber } from "./utils";
+import { formatDate, generatePhoneNumber } from "./utils";
 
 export const doctorFactory = async (
   db: NodePgDatabase<typeof schema> | PgliteDatabase<typeof schema>,
@@ -166,7 +166,7 @@ export const USGReportFactory = async (
       referrerId: referrerId ?? (await doctorFactory(db)).id,
       partOfScan: partOfScan ?? faker.lorem.sentence(),
       findings: findings ?? faker.lorem.paragraph(),
-      date: date ?? faker.date.recent({ days: 30 }),
+      date: formatDate(date ?? faker.date.recent({ days: 30 })),
       deleted,
     })
     .returning();
