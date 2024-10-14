@@ -1,4 +1,11 @@
-import { ClipboardPlus, Home, Users } from "lucide-react";
+import {
+  ChartLine,
+  ClipboardPlus,
+  Home,
+  LayoutTemplate,
+  Stethoscope,
+  Users,
+} from "lucide-react";
 function App() {
   return (
     <>
@@ -24,12 +31,15 @@ function App() {
                 Patients
               </div>
               <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                <Stethoscope className="h-4 w-4" />
                 Doctors
               </div>
               <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                <LayoutTemplate className="h-4 w-4" />
                 Templates
               </div>
               <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                <ChartLine className="h-4 w-4" />
                 Analytics
               </div>
             </nav>
