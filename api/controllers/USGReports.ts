@@ -5,8 +5,8 @@ import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "../config/constants";
 import { USGReports } from "../db/schema";
 import { BadRequestError, NotFoundError } from "../errors";
 import context from "../setup";
-import db from "../utils/db";
 import { formatDate } from "../tests/utils";
+import db from "../utils/db";
 
 const USGReportQueryFilters = {
   with: {
