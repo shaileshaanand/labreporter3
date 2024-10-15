@@ -17,6 +17,8 @@ import { Route as ReportsIndexImport } from './routes/reports/index'
 import { Route as PatientsIndexImport } from './routes/patients/index'
 import { Route as DoctorsIndexImport } from './routes/doctors/index'
 import { Route as AnalyticsIndexImport } from './routes/analytics/index'
+import { Route as PatientsNewImport } from './routes/patients/new'
+import { Route as DoctorsNewImport } from './routes/doctors/new'
 
 // Create/Update Routes
 
@@ -50,6 +52,16 @@ const AnalyticsIndexRoute = AnalyticsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const PatientsNewRoute = PatientsNewImport.update({
+  path: '/patients/new',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DoctorsNewRoute = DoctorsNewImport.update({
+  path: '/doctors/new',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -59,6 +71,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/doctors/new': {
+      id: '/doctors/new'
+      path: '/doctors/new'
+      fullPath: '/doctors/new'
+      preLoaderRoute: typeof DoctorsNewImport
+      parentRoute: typeof rootRoute
+    }
+    '/patients/new': {
+      id: '/patients/new'
+      path: '/patients/new'
+      fullPath: '/patients/new'
+      preLoaderRoute: typeof PatientsNewImport
       parentRoute: typeof rootRoute
     }
     '/analytics/': {
@@ -103,6 +129,8 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/doctors/new': typeof DoctorsNewRoute
+  '/patients/new': typeof PatientsNewRoute
   '/analytics': typeof AnalyticsIndexRoute
   '/doctors': typeof DoctorsIndexRoute
   '/patients': typeof PatientsIndexRoute
@@ -112,6 +140,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/doctors/new': typeof DoctorsNewRoute
+  '/patients/new': typeof PatientsNewRoute
   '/analytics': typeof AnalyticsIndexRoute
   '/doctors': typeof DoctorsIndexRoute
   '/patients': typeof PatientsIndexRoute
@@ -122,6 +152,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/doctors/new': typeof DoctorsNewRoute
+  '/patients/new': typeof PatientsNewRoute
   '/analytics/': typeof AnalyticsIndexRoute
   '/doctors/': typeof DoctorsIndexRoute
   '/patients/': typeof PatientsIndexRoute
@@ -133,16 +165,28 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/doctors/new'
+    | '/patients/new'
     | '/analytics'
     | '/doctors'
     | '/patients'
     | '/reports'
     | '/templates'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/doctors' | '/patients' | '/reports' | '/templates'
+  to:
+    | '/'
+    | '/doctors/new'
+    | '/patients/new'
+    | '/analytics'
+    | '/doctors'
+    | '/patients'
+    | '/reports'
+    | '/templates'
   id:
     | '__root__'
     | '/'
+    | '/doctors/new'
+    | '/patients/new'
     | '/analytics/'
     | '/doctors/'
     | '/patients/'
@@ -153,6 +197,8 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DoctorsNewRoute: typeof DoctorsNewRoute
+  PatientsNewRoute: typeof PatientsNewRoute
   AnalyticsIndexRoute: typeof AnalyticsIndexRoute
   DoctorsIndexRoute: typeof DoctorsIndexRoute
   PatientsIndexRoute: typeof PatientsIndexRoute
@@ -162,6 +208,8 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DoctorsNewRoute: DoctorsNewRoute,
+  PatientsNewRoute: PatientsNewRoute,
   AnalyticsIndexRoute: AnalyticsIndexRoute,
   DoctorsIndexRoute: DoctorsIndexRoute,
   PatientsIndexRoute: PatientsIndexRoute,
@@ -182,6 +230,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/doctors/new",
+        "/patients/new",
         "/analytics/",
         "/doctors/",
         "/patients/",
@@ -191,6 +241,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/doctors/new": {
+      "filePath": "doctors/new.tsx"
+    },
+    "/patients/new": {
+      "filePath": "patients/new.tsx"
     },
     "/analytics/": {
       "filePath": "analytics/index.tsx"

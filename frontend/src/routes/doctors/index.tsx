@@ -1,6 +1,14 @@
 import ButtonWithTooltip from "@/components/ButtonWithTooltip";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -9,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { doctorsListQuery } from "@/hooks/doctors";
+import { Outlet } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 import { CirclePlus, SquarePen, Trash2 } from "lucide-react";
 
@@ -20,7 +29,7 @@ const DoctorsList = () => {
         <h1 className="text-2xl">Doctors</h1>
         <Button>
           <CirclePlus className="mr-2 h-5 w-5" />
-          Add Doctor
+          New Doctor
         </Button>
       </div>
       <div>
@@ -51,9 +60,23 @@ const DoctorsList = () => {
             </TableBody>
           </Table>
         ) : (
-          "Loading..."
+          "No Doctors..."
         )}
       </div>
+
+      <Outlet />
+      {/* <Dialog open={true}>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog> */}
     </div>
   );
 };
