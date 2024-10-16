@@ -1,14 +1,6 @@
 import ButtonWithTooltip from "@/components/ButtonWithTooltip";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Table,
   TableBody,
   TableCell,
@@ -65,23 +57,11 @@ const DoctorsList = () => {
       </div>
 
       <Outlet />
-      {/* <Dialog open={true}>
-        <DialogTrigger>Open</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog> */}
     </div>
   );
 };
 
-export const Route = createFileRoute("/doctors/")({
+export const Route = createFileRoute("/doctors")({
   component: DoctorsList,
   loader: async ({ context: { queryClient } }) => {
     return queryClient.ensureQueryData(doctorsListQuery);
