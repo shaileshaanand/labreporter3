@@ -1,4 +1,4 @@
-import { and, count, desc, eq, ilike, like, or } from "drizzle-orm";
+import { and, count, desc, eq, ilike, or } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { z } from "zod";
 import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "../config/constants";

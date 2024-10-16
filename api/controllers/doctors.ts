@@ -2,7 +2,6 @@ import { and, eq } from "drizzle-orm";
 import Elysia, { t } from "elysia";
 import { z } from "zod";
 import { doctors } from "../db/schema";
-import { DoctorSelectSchema } from "../db/types";
 import { NotFoundError } from "../errors";
 import context from "../setup";
 import db from "../utils/db";
