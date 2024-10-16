@@ -1,19 +1,10 @@
 import { and, eq } from "drizzle-orm";
 import Elysia, { t } from "elysia";
-import { z } from "zod";
 import { doctors } from "../db/schema";
 import { NotFoundError } from "../errors";
 import context from "../setup";
 import db from "../utils/db";
-
-const doctorValidator = z.object({
-  name: z.string().min(3),
-  phone: z
-    .string()
-    .regex(/^[6-9]\d{9}$/)
-    .optional(),
-  email: z.string().email().optional(),
-});
+import { doctorValidator } from "../validators";
 
 const doctorsController = new Elysia({ prefix: "/doctors" })
   .use(context)

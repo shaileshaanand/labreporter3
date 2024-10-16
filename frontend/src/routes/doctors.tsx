@@ -9,23 +9,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { doctorsListQuery } from "@/hooks/doctors";
-import { Outlet } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { Link, Outlet } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 import { CirclePlus, SquarePen, Trash2 } from "lucide-react";
 
 const DoctorsList = () => {
-  const { data } = Route.useLoaderData();
+  const {data} = useQuery(doctorsListQuery);
+  
   return (
     <div>
       <div className="flex justify-between pb-2 items-center">
         <h1 className="text-2xl">Doctors</h1>
-        <Button>
-          <CirclePlus className="mr-2 h-5 w-5" />
-          New Doctor
+        <Button asChild>
+          <Link to="/doctors/new">
+            <CirclePlus className="mr-2 h-5 w-5" />
+            New Doctor
+          </Link>
         </Button>
       </div>
       <div>
-        {data ? (
+        {data?.data ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -36,7 +40,7 @@ const DoctorsList = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((doctor) => (
+              {data.data.map((doctor) => (
                 <TableRow key={doctor.id}>
                   <TableCell className="px-4 py-2">{doctor.name}</TableCell>
                   <TableCell className="px-4 py-2">{doctor.phone}</TableCell>
@@ -55,7 +59,6 @@ const DoctorsList = () => {
           "No Doctors..."
         )}
       </div>
-
       <Outlet />
     </div>
   );
